@@ -34,11 +34,11 @@ if($mail_relance->is_cancelled()) {
     // but for now we will just redirect back to the course main page.
     $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     // We need to add code to appropriately act on and store the submitted data
-    /* if (!$DB->insert_record('block_mail_relance', $fromform)) {
+    if (!$DB->insert_record('block_mail_relance', $fromform)) {
         print_error('inserterror', 'block_mail_relance');
-    } */
-    //redirect($courseurl);
-    print_object($fromform);
+    } 
+    redirect($courseurl);
+    //print_object($fromform);
 } else {
     // form didn't validate or this is the first display
     $site = get_site();
