@@ -42,7 +42,8 @@ if($mail_relance->is_cancelled()) {
     $displaytext = $fromform->displaytext;
     $text = $fromform->displaytext['text'];
     //$d = $fromform->displaytext['format'];
-    $sql = 'insert into mdl_block_mail_relance(blockid,displaytext,text) values ("'.$blockid.'","'.$displaytext.'","'.$text.'") ';
+    //$sql = 'INSERT into mdl_block_mail_relance(blockid,displaytext,text) values ("'.$blockid.'","'.$displaytext.'","'.$text.'") ';
+    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.$displaytext.'", text = "'.$text.'" ';
     if (!$DB->execute($sql)) {
         print_error('inserterror', 'block_mail_relance');
     }
