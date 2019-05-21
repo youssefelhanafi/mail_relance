@@ -55,5 +55,5 @@ if($mail_relance->is_cancelled()) {
     echo $OUTPUT->footer();
 }
  
-$mail_relance->display();
+//$mail_relance->display();
 ?>
