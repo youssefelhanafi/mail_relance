@@ -38,16 +38,19 @@ if($mail_relance->is_cancelled()) {
         print_error('inserterror', 'block_mail_relance');
     } */ 
     //print_object($fromform);
+    $id = '';
     $blockid = $fromform->blockid ;
-    $displaytext = $fromform->displaytext;
+    $displaytext = '';
     $text = $fromform->displaytext['text'];
-    //$d = $fromform->displaytext['format'];
-    //$sql = 'INSERT into mdl_block_mail_relance(blockid,displaytext,text) values ("'.$blockid.'","'.$displaytext.'","'.$text.'") ';
-    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.$displaytext.'", text = "'.$text.'" ';
+    $format = '0';
+    $dataobject = array('id' => $id,'blockid' => $blockid,'displaytext' => $displaytext,'text' => $text,'format' => $format);
+    $table = 'block_mail_relance';
+    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.$displaytext.'", text = "'.$text.'", format = "'.$format.'" ';
+    //$DB->update_record($table, $dataobject, $bulk=false);
     if (!$DB->execute($sql)) {
         print_error('inserterror', 'block_mail_relance');
     }
-    redirect($courseurl);
+    redirect($courseurl); 
 } else {
     // form didn't validate or this is the first display
     $site = get_site();
