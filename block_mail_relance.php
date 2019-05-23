@@ -1,6 +1,6 @@
 <?php
 
-class block_mail_relance extends block_list{
+class block_mail_relance extends block_base{
     
     public function init(){
         $this->title = get_string('mailrelance', 'block_mail_relance');
@@ -21,7 +21,7 @@ class block_mail_relance extends block_list{
     }
 
     public function get_content() {
-        global $COURSE;
+        global $COURSE, $DB;
         /* if ($this->content !== null) {
           return $this->content;
         }
@@ -33,22 +33,42 @@ class block_mail_relance extends block_list{
         return $this->content; */
         if ($this->content !== null) {
             return $this->content;
-          }
+        }
          
-          $this->content         = new stdClass;
-          $this->content->items  = array();
-          $this->content->icons  = array();
-          
-          $url = new moodle_url('/blocks/mail_relance/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
-          $this->content->footer = html_writer::link($url, get_string('addpage', 'block_mail_relance'));
-          
+        $this->content         = new stdClass;
+        $this->content->items  = array();
+        $this->content->icons  = array();
+        
+        $url = new moodle_url('/blocks/mail_relance/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
+        $this->content->footer = html_writer::link($url, get_string('addpage', 'block_mail_relance'));
+
+        if (!empty($this->config->text)) {
+        $this->content->text = $this->config->text;
+        }
+
+
+        /* $url = new moodle_url('/blocks/mail_relance/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
+        $this->content->footer = html_writer::link($url, get_string('addpage1', 'block_mail_relance')); */
+        
+        
+        //$this->content->items[] = html_writer::tag('a', 'Veuillez saisir le contenu du mail de relance içi !', array('href' => 'some_file.php'));
+        //$this->content->icons[] = html_writer::empty_tag('img', array('src' => 'images/icons/icon.png', 'class' => 'icon'));
+        
+        // Add more list items here
+
+        // This is the new code.
+        if ($mail_relancepages = $DB->get_records('block_mail_relance', array('blockid' => $this->instance->id))) {
+            $this->content->text .= html_writer::start_tag('ul');
+            foreach ($mail_relancepages as $mail_relancepage) {
+                $pageurl = new moodle_url('/blocks/mail_relance/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $mail_relancepage->id, 'viewpage' => '1'));
+                $this->content->text .= html_writer::start_tag('li');
+                $this->content->text .= html_writer::span($mail_relancepage->text);
+                $this->content->text .= html_writer::end_tag('li');
+            }
+            $this->content->text .= html_writer::end_tag('ul');
+        }
          
-          //$this->content->items[] = html_writer::tag('a', 'Veuillez saisir le contenu du mail de relance içi !', array('href' => 'some_file.php'));
-          //$this->content->icons[] = html_writer::empty_tag('img', array('src' => 'images/icons/icon.png', 'class' => 'icon'));
-         
-          // Add more list items here
-         
-          return $this->content;
+        return $this->content;
     }
 
     /* public function instance_allow_multiple() {

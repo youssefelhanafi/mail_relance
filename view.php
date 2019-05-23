@@ -10,7 +10,9 @@ $courseid = required_param('courseid', PARAM_INT);
 $blockid = required_param('blockid', PARAM_INT);
  
 // Next look for optional variables.
+//$id = optional_param('id', 0, PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
+$viewpage = optional_param('viewpage', false, PARAM_BOOL);
  
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('invalidcourse', 'block_mail_relance', $courseid);
@@ -45,7 +47,8 @@ if($mail_relance->is_cancelled()) {
     $format = '0';
     $dataobject = array('id' => $id,'blockid' => $blockid,'displaytext' => $displaytext,'text' => $text,'format' => $format);
     $table = 'block_mail_relance';
-    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.$displaytext.'", text = "'.$text.'", format = "'.$format.'" ';
+    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.date("Y-m-d h:i:s").'", text = "'.$text.'", format = "'.$format.'" ';
+    //$sql = 'insert into mdl_block_mail_relance (blockid,displaytext,text,format) values ("'.$blockid.'","'.date("Y-m-d h:i:s").'","'.$text.'","'.$format.'")';
     //$DB->update_record($table, $dataobject, $bulk=false);
     if (!$DB->execute($sql)) {
         print_error('inserterror', 'block_mail_relance');
@@ -54,10 +57,20 @@ if($mail_relance->is_cancelled()) {
 } else {
     // form didn't validate or this is the first display
     $site = get_site();
-    echo $OUTPUT->header();
+
+    /* echo $OUTPUT->header();
     $mail_relance->display();
+    echo $OUTPUT->footer(); */
+    echo $OUTPUT->header();
+    if ($viewpage) {
+        $mail_relancepage = $DB->get_record('block_mail_relance', array('id' => $id));
+        block_mail_relance_print_page($mail_relancepage);
+    } else {
+        $mail_relance->display();
+    }
     echo $OUTPUT->footer();
 }
  
 //$mail_relance->display();
 ?>
+
