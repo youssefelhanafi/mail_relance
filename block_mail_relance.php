@@ -22,7 +22,7 @@ class block_mail_relance extends block_base{
 
     public function get_content() {
         global $COURSE, $DB;
-        
+
         if ($this->content !== null) {
             return $this->content;
         }
@@ -44,7 +44,7 @@ class block_mail_relance extends block_base{
             foreach ($mail_relancepages as $mail_relancepage) {
                 $pageurl = new moodle_url('/blocks/mail_relance/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id, 'id' => $mail_relancepage->id, 'viewpage' => '1'));
                 $this->content->text .= html_writer::start_tag('li');
-                $this->content->text .= html_writer::span($mail_relancepage->text);
+                $this->content->text .= html_writer::span(urldecode($mail_relancepage->text));
                 $this->content->text .= html_writer::end_tag('li');
             }
             $this->content->text .= html_writer::end_tag('ul');

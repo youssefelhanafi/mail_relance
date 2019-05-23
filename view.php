@@ -59,7 +59,7 @@ if($mail_relance->is_cancelled()) {
     $format = '0';
     $dataobject = array('id' => $id,'blockid' => $blockid,'displaytext' => $displaytext,'text' => $text,'format' => $format);
     $table = 'block_mail_relance';
-    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.date("Y-m-d h:i:s").'", text = "'.escape($text).'", format = "'.$format.'" ';
+    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.date("Y-m-d h:i:s").'", text = "'.urlencode($text).'", format = "'.$format.'" ';
     //$sql = 'insert into mdl_block_mail_relance (blockid,displaytext,text,format) values ("'.$blockid.'","'.date("Y-m-d h:i:s").'","'.$text.'","'.$format.'")';
     //$DB->update_record($table, $dataobject, $bulk=false);
     if (!$DB->execute($sql)) {
