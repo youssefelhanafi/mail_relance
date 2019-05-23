@@ -22,15 +22,7 @@ class block_mail_relance extends block_base{
 
     public function get_content() {
         global $COURSE, $DB;
-        /* if ($this->content !== null) {
-          return $this->content;
-        }
-     
-        $this->content         =  new stdClass;
-        $this->content->text   = 'Veuillez saisir le contenu du mail de relance içi !';
-        //$this->content->footer = 'Footer here...';
-     
-        return $this->content; */
+        
         if ($this->content !== null) {
             return $this->content;
         }
@@ -45,16 +37,6 @@ class block_mail_relance extends block_base{
         if (!empty($this->config->text)) {
         $this->content->text = $this->config->text;
         }
-
-
-        /* $url = new moodle_url('/blocks/mail_relance/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
-        $this->content->footer = html_writer::link($url, get_string('addpage1', 'block_mail_relance')); */
-        
-        
-        //$this->content->items[] = html_writer::tag('a', 'Veuillez saisir le contenu du mail de relance içi !', array('href' => 'some_file.php'));
-        //$this->content->icons[] = html_writer::empty_tag('img', array('src' => 'images/icons/icon.png', 'class' => 'icon'));
-        
-        // Add more list items here
 
         // This is the new code.
         if ($mail_relancepages = $DB->get_records('block_mail_relance', array('blockid' => $this->instance->id))) {

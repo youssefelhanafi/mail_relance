@@ -8,12 +8,7 @@ class mail_relance_form extends moodleform {
  
         $mform =& $this->_form;
         $mform->addElement('header','displayinfo', get_string('textfields', 'block_mail_relance'));
-
-        // add page title element.
-        /* $mform->addElement('text', 'pagetitle', get_string('pagetitle', 'block_mail_relance'));
-        $mform->setType('pagetitle', PARAM_RAW);
-        $mform->addRule('pagetitle', null, 'required', null, 'client'); */
-        
+      
         // add display text field
         $mform->addElement('htmleditor', 'displaytext', get_string('content', 'block_mail_relance'));
         $mform->setType('displaytext', PARAM_RAW);

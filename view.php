@@ -1,5 +1,19 @@
 <?php
- 
+
+function escape($value) {
+    $return = '';
+    for($i = 0; $i < strlen($value); ++$i) {
+        $char = $value[$i];
+        $ord = ord($char);
+        if($char !== "'" && $char !== "\"" && $char !== '\\' && $ord >= 32 && $ord <= 126)
+            $return .= $char;
+        else
+            $return .= '\\x' . dechex($ord);
+    }
+    return $return;
+}
+
+
 require_once('../../config.php');
 require_once('mail_relance_form.php');
  
@@ -36,9 +50,6 @@ if($mail_relance->is_cancelled()) {
     // but for now we will just redirect back to the course main page.
     $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     // We need to add code to appropriately act on and store the submitted data
-    /* if (!$DB->insert_record('block_mail_relance', $fromform)) {
-        print_error('inserterror', 'block_mail_relance');
-    } */ 
     //print_object($fromform);
     $id = '';
     $blockid = $fromform->blockid ;
@@ -47,20 +58,17 @@ if($mail_relance->is_cancelled()) {
     $format = '0';
     $dataobject = array('id' => $id,'blockid' => $blockid,'displaytext' => $displaytext,'text' => $text,'format' => $format);
     $table = 'block_mail_relance';
-    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.date("Y-m-d h:i:s").'", text = "'.$text.'", format = "'.$format.'" ';
+    $sql = 'UPDATE mdl_block_mail_relance SET blockid = "'.$blockid.'", displaytext = "'.date("Y-m-d h:i:s").'", text = "'.escape($text).'", format = "'.$format.'" ';
     //$sql = 'insert into mdl_block_mail_relance (blockid,displaytext,text,format) values ("'.$blockid.'","'.date("Y-m-d h:i:s").'","'.$text.'","'.$format.'")';
     //$DB->update_record($table, $dataobject, $bulk=false);
     if (!$DB->execute($sql)) {
         print_error('inserterror', 'block_mail_relance');
     }
-    redirect($courseurl); 
+    redirect($courseurl);  
 } else {
     // form didn't validate or this is the first display
     $site = get_site();
 
-    /* echo $OUTPUT->header();
-    $mail_relance->display();
-    echo $OUTPUT->footer(); */
     echo $OUTPUT->header();
     if ($viewpage) {
         $mail_relancepage = $DB->get_record('block_mail_relance', array('id' => $id));
