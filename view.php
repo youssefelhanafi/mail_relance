@@ -8,8 +8,9 @@ function escape($value) {
         if($char !== "'" && $char !== "\"" && $char !== '\\' && $ord >= 32 && $ord <= 126)
             $return .= $char;
         else
-            $return .= '\\x' . dechex($ord);
+            $return .= '' . dechex($ord);
     }
+    $return = str_replace('da','',$return);
     return $return;
 }
 
